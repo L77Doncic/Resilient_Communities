@@ -63,7 +63,118 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       font-family: "Times New Roman", Times, serif !important;
     }
 
+    /* Button hover redesign: remove empty text roll and use lift/glow feedback */
+    :root {
+      --btn-hover-ease: cubic-bezier(.22, 1, .36, 1);
+      --btn-hover-shadow-dark: 0 10px 24px rgba(14, 38, 25, 0.26);
+      --btn-hover-shadow-light: 0 10px 22px rgba(24, 68, 44, 0.16);
+      --btn-hover-green: #25804a;
+      --btn-hover-green-soft: #f2f8f4;
+    }
+
+    .c-button__rotate--jp,
+    .c-button__rotate--en--white,
+    .c-button__circle--white,
+    .c-button__circle--black,
+    .c-button__en {
+      transition:
+        transform .28s var(--btn-hover-ease),
+        box-shadow .28s var(--btn-hover-ease),
+        background-color .28s var(--btn-hover-ease),
+        color .28s var(--btn-hover-ease),
+        border-color .28s var(--btn-hover-ease);
+      will-change: transform;
+    }
+
+    .c-button__rotate--jp .label,
+    .c-button__rotate--en--white .label {
+      transition: transform .28s var(--btn-hover-ease), color .28s var(--btn-hover-ease);
+    }
+
+    .c-button__rotate--jp .label::before,
+    .c-button__rotate--en--white .label::before {
+      content: none !important;
+    }
+
+    @media (hover: hover) {
+      .c-button__rotate--jp:hover {
+        transform: translateY(-2px);
+        background-color: var(--btn-hover-green);
+        box-shadow: var(--btn-hover-shadow-dark);
+      }
+
+      .c-button__rotate--en--white:hover {
+        transform: translateY(-2px);
+        background-color: var(--btn-hover-green-soft);
+        box-shadow: var(--btn-hover-shadow-light);
+      }
+
+      .c-button__rotate--jp:hover .label,
+      .c-button__rotate--en--white:hover .label,
+      .c-induction__list-item a:hover .c-button__rotate--en--white .label {
+        transform: none !important;
+      }
+
+      .c-button__rotate--en--white:hover .label {
+        color: var(--btn-hover-green);
+      }
+
+      .c-button__circle--white:hover,
+      .c-button__circle--black:hover {
+        transform: translateY(-2px);
+      }
+
+      .c-button__circle--white:hover {
+        box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+      }
+
+      .c-button__circle--black:hover {
+        color: var(--btn-hover-green);
+      }
+
+      .c-button__circle--black:hover .label::before,
+      .c-button__circle--black:hover::before {
+        background-color: var(--btn-hover-green);
+      }
+
+      .c-button__circle--black:hover .label::after {
+        background: var(--btn-hover-green);
+      }
+
+      .c-button__en:hover {
+        color: var(--btn-hover-green);
+      }
+
+      .c-button__en:hover::after {
+        background: var(--btn-hover-green);
+      }
+    }
+
   </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var logo = document.getElementById('js-site-logo');
+      if (!logo) return;
+
+      var applyLogoAlt = function () {
+        var lang = document.documentElement.getAttribute('data-lang') === 'en' ? 'en' : 'zh';
+        logo.setAttribute('alt', lang === 'en' ? 'SMART EMERGENCY' : '智慧应急');
+      };
+
+      applyLogoAlt();
+
+      var observer = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'data-lang') {
+            applyLogoAlt();
+          }
+        });
+      });
+
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-lang'] });
+    });
+  </script>
 </head>
 
   <body class="l-main-body" id="pageTop">
@@ -82,20 +193,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="l-header__inner">
     <div class="l-header__title">
       <a href="/" target="_top">
-        <img src="/common/img/elements/site_logo.png" alt="SMART EMERGENCY 智慧应急" width="110" height="44">
+        <img id="js-site-logo" src="/common/img/elements/site_logo.png" alt="智慧应急" width="110" height="44">
       </a>
     </div>
     <div class="l-header__items">
       <div class="l-header__link u-hide-max-tab">
-        <a class="c-button__rotate--jp" href="/encyclopedia" target="_top"><span><span class="label" data-hover="Go to Encyclopedia"><span class="en">ENCYCLOPEDIA</span><span class="jp">防灾百科</span></span></span></a>
-        <a class="c-button__rotate--jp" href="/simulation" target="_top"><span><span class="label" data-hover="Go to Simulation"><span class="en">SIMULATION</span><span class="jp">模拟演练</span></span></span></a>
-        <a class="c-button__rotate--jp" href="/kit" target="_top"><span><span class="label" data-hover="Go to Emergency Kit"><span class="en">EMERGENCY KIT</span><span class="jp">应急包</span></span></span></a>
-        <a class="c-button__rotate--jp" href="/games" target="_top"><span><span class="label" data-hover="Go to Mini Games"><span class="en">MINI GAMES</span><span class="jp">互动游戏</span></span></span></a>
+        <a class="c-button__rotate--jp" href="/encyclopedia" target="_top"><span><span class="label" data-hover=""><span class="en">ENCYCLOPEDIA</span><span class="jp">防灾百科</span></span></span></a>
+        <a class="c-button__rotate--jp" href="/simulation" target="_top"><span><span class="label" data-hover=""><span class="en">SIMULATION</span><span class="jp">模拟演练</span></span></span></a>
+        <a class="c-button__rotate--jp" href="/kit" target="_top"><span><span class="label" data-hover=""><span class="en">EMERGENCY KIT</span><span class="jp">应急包</span></span></span></a>
+        <a class="c-button__rotate--jp" href="/games" target="_top"><span><span class="label" data-hover=""><span class="en">MINI GAMES</span><span class="jp">互动游戏</span></span></span></a>
       </div>
       <div class="l-header__english">
-        <a class="c-button__en" href="#" id="js-lang-toggle" aria-label="Switch language">English</a>
+        <a class="c-button__en" href="#" id="js-lang-toggle" aria-label="切换语言">切换语言</a>
       </div>
-      <button class="l-header__open-button" id="js-header-open" aria-label="メニューを開く" aria-controls="js-header-nav" aria-expanded="false">
+      <button class="l-header__open-button" id="js-header-open" aria-label="打开菜单" aria-controls="js-header-nav" aria-expanded="false">
         <span class="l-header__open-line"></span>
         <span class="l-header__open-line"></span>
         <span class="l-header__open-line"></span>
@@ -111,16 +222,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <li><a class="" href="/simulation" target="_top"><span class="en">SIMULATION</span><span class="jp">模拟演练</span></a></li>
           <li><a class="" href="/kit" target="_top"><span class="en">EMERGENCY KIT</span><span class="jp">应急包</span></a></li>
           <li><a class="" href="/games" target="_top"><span class="en">MINI GAMES</span><span class="jp">互动游戏</span></a></li>
-          <li><a class="" href="/legacy-home" target="_top"><span class="en">LEGACY</span><span class="jp">旧版主页</span></a></li>
         </ul>
       </nav>
       <div class="l-header__link u-hide-min-tab">
-        <a class="c-button__rotate--jp" href="/encyclopedia" target="_top"><span><span class="label" data-hover="Go to Encyclopedia"><span class="en">ENCYCLOPEDIA</span><span class="jp">防灾百科</span></span></span></a>
-        <a class="c-button__rotate--jp" href="/simulation" target="_top"><span><span class="label" data-hover="Go to Simulation"><span class="en">SIMULATION</span><span class="jp">模拟演练</span></span></span></a>
+        <a class="c-button__rotate--jp" href="/encyclopedia" target="_top"><span><span class="label" data-hover=""><span class="en">ENCYCLOPEDIA</span><span class="jp">防灾百科</span></span></span></a>
+        <a class="c-button__rotate--jp" href="/simulation" target="_top"><span><span class="label" data-hover=""><span class="en">SIMULATION</span><span class="jp">模拟演练</span></span></span></a>
       </div>
     </div>
    
-    <button class="l-header__close-button" id="js-header-close" aria-label="メニューを閉じる" aria-controls="js-header-nav" aria-expanded="false">
+    <button class="l-header__close-button" id="js-header-close" aria-label="关闭菜单" aria-controls="js-header-nav" aria-expanded="false">
       <span class="l-header__close-line"></span>
       <span class="l-header__close-line"></span>
     </button>
@@ -372,7 +482,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
         </details>
         
-          <ul class="c-card-list-item__labels" aria-label="カテゴリ">
+          <ul class="c-card-list-item__labels" aria-label="标签">
             
               <li class="c-label"><span class="en">CLIMATE</span><span class="jp">气候</span></li>
             
@@ -419,7 +529,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <div class="c-brief-source__body">
             <p>
               <span class="en">In its 24 October 2025 release, WMO said AI-supported forecasting should strengthen early warning systems, not replace them. The practical point for communities is simple: better forecasts and earlier warnings create more time to protect people, transport, and daily services.</span>
-              <span class="jp">世界气象组织在2025年10月24日的发布中指出，AI 应当强化而不是取代现有预报体系。对社区而言，关键在于：更准确的预报和更早的预警，意味着能为人员安全、交通组织和日常服务争取更多准备时间。</span>
+              <span class="jp">世界气象组织在2025年10月24日的发布中指出，人工智能应当强化而不是取代现有预报体系。对社区而言，关键在于：更准确的预报和更早的预警，意味着能为人员安全、交通组织和日常服务争取更多准备时间。</span>
             </p>
             <p class="c-brief-source__link">
               <a href="https://public.wmo.int/news/media-centre/world-meteorological-congress-endorses-actions-promote-ai-forecasts-and-warnings" target="_blank" rel="noopener noreferrer">public.wmo.int/news/media-centre/world-meteorological-congress-endorses-actions-promote-ai-forecasts-and-warnings</a>
@@ -427,7 +537,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
         </details>
         
-          <ul class="c-card-list-item__labels" aria-label="カテゴリ">
+          <ul class="c-card-list-item__labels" aria-label="标签">
             
               <li class="c-label"><span class="en">WARNINGS</span><span class="jp">预警</span></li>
             
@@ -482,7 +592,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
         </details>
         
-          <ul class="c-card-list-item__labels" aria-label="カテゴリ">
+          <ul class="c-card-list-item__labels" aria-label="标签">
             
               <li class="c-label"><span class="en">ADAPTATION</span><span class="jp">适应</span></li>
             
@@ -509,21 +619,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <span class="jp">社区故事</span>
               </h3>
               <div class="top-event-report__body">
-                <a class="c-button__circle--black" href="/legacy-home" target="_top"><span class="label">VIEW MORE</span></a>
+                <a class="c-button__circle--black" href="/" target="_top"><span class="label"><span class="en">VIEW MORE</span><span class="jp">查看更多</span></span></a>
                 <div class="top-event-report__list">
                   
   <ul class="c-report-list">
     
     
       <li class="c-report-list-item">
-  <a href="/legacy-home" target="_top">
+  <a href="/" target="_top">
     <figure class="c-report-list-item__img">
       <img src="/common/img/event/event-report_01.webp" width="610" height="610" alt="" loading="lazy">
     </figure>
     <dl class="c-report-list-item__content">
       <dt class="c-report-list-item__title">
         <span class="en">Vol.01<br>The 15-Minute Warning</span>
-        <span class="jp">Vol.01<br>关键的15分钟</span>
+        <span class="jp">第01期<br>关键的15分钟</span>
       </dt>
       <dd class="c-report-list-item__text">
         <span class="en">How an early warning system helped the neighborhood respond fast to flash floods.</span>
@@ -534,25 +644,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </li>
     
       <li class="c-report-list-item">
-  <a href="/legacy-home" target="_top">
+  <a href="/" target="_top">
     <figure class="c-report-list-item__img">
       <img src="/common/img/event/event-report_02.webp" width="610" height="610" alt="" loading="lazy">
     </figure>
     <dl class="c-report-list-item__content">
-      <dt class="c-report-list-item__title">Vol.02<br>Building the Firebreak</dt>
-      <dd class="c-report-list-item__text">共筑防火带：志愿者在火灾季节前共同清理可燃物与干燥灌木。</dd>
+      <dt class="c-report-list-item__title">
+        <span class="en">Vol.02<br>Building the Firebreak</span>
+        <span class="jp">第02期<br>共筑防火带</span>
+      </dt>
+      <dd class="c-report-list-item__text">
+        <span class="en">Volunteers cleared dry brush together before fire season.</span>
+        <span class="jp">共筑防火带：志愿者在火灾季节前共同清理可燃物与干燥灌木。</span>
+      </dd>
     </dl>
   </a>
 </li>
     
       <li class="c-report-list-item">
-  <a href="/legacy-home" target="_top">
+  <a href="/" target="_top">
     <figure class="c-report-list-item__img">
       <img src="/common/img/event/event-report_03.webp" width="610" height="610" alt="" loading="lazy">
     </figure>
     <dl class="c-report-list-item__content">
-      <dt class="c-report-list-item__title">Vol.03<br>Neighborhood Drill Day</dt>
-      <dd class="c-report-list-item__text">从集合到互助：一次全流程的社区演练，串起每个人的安全感。</dd>
+      <dt class="c-report-list-item__title">
+        <span class="en">Vol.03<br>Neighborhood Drill Day</span>
+        <span class="jp">第03期<br>社区演练日</span>
+      </dt>
+      <dd class="c-report-list-item__text">
+        <span class="en">From assembly to mutual aid, one full drill connected every resident.</span>
+        <span class="jp">从集合到互助：一次全流程的社区演练，串起每个人的安全感。</span>
+      </dd>
     </dl>
   </a>
 </li>
@@ -576,7 +698,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <span class="en">EVENT & SERVICE</span>
           <span class="jp">模拟演练</span>
         </h3>
-        <p class="c-button__rotate--en--white"><span><span class="label" data-hover="进入模拟演练">VIEW MORE</span></span></p>
+        <p class="c-button__rotate--en--white"><span><span class="label" data-hover=""><span class="en">VIEW MORE</span><span class="jp">查看详情</span></span></span></p>
       </a>
     </li>
   
@@ -590,7 +712,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <span class="en">INTERVIEW</span>
           <span class="jp">互动游戏</span>
         </h3>
-        <p class="c-button__rotate--en--white"><span><span class="label" data-hover="进入互动游戏">VIEW MORE</span></span></p>
+        <p class="c-button__rotate--en--white"><span><span class="label" data-hover=""><span class="en">VIEW MORE</span><span class="jp">查看详情</span></span></span></p>
       </a>
     </li>
   
@@ -604,7 +726,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <span class="en">SAFETY</span>
           <span class="jp">应急包</span>
         </h3>
-        <p class="c-button__rotate--en--white"><span><span class="label" data-hover="查看应急包清单">VIEW MORE</span></span></p>
+        <p class="c-button__rotate--en--white"><span><span class="label" data-hover=""><span class="en">VIEW MORE</span><span class="jp">查看详情</span></span></span></p>
       </a>
     </li>
   
@@ -626,14 +748,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <summary class="c-faq__summary">
           <div class="c-faq__summary-inner">
             <span class="c-faq__summary-icon">Q</span>
-            <span class="c-faq__summary-text">什么是韧性社区？</span>
+            <span class="c-faq__summary-text"><span class="en">What is a resilient community?</span><span class="jp">什么是韧性社区？</span></span>
           </div>
         </summary>
         <div class="c-faq__answer">
           <div class="c-faq__answer-inner">
             <span class="c-faq__answer-icon">A</span>
             <div class="c-faq__answer-text">
-              <p>A resilient community can withstand and recover from disasters.<br><br>韧性社区指能够抵御灾害冲击并在较短时间内恢复运转的社区。</p>
+              <p><span class="en">A resilient community can withstand and recover from disasters.</span><span class="jp">韧性社区指能够抵御灾害冲击并在较短时间内恢复运转的社区。</span></p>
             </div>
           </div>
         </div>
@@ -645,14 +767,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <summary class="c-faq__summary">
           <div class="c-faq__summary-inner">
             <span class="c-faq__summary-icon">Q</span>
-            <span class="c-faq__summary-text">如何参与演练？</span>
+            <span class="c-faq__summary-text"><span class="en">How can I join drills?</span><span class="jp">如何参与演练？</span></span>
           </div>
         </summary>
         <div class="c-faq__answer">
           <div class="c-faq__answer-inner">
             <span class="c-faq__answer-icon">A</span>
             <div class="c-faq__answer-text">
-              <p>Check the updates and simulation modules for schedules and instructions.<br><br>请关注“最新动态”并进入“模拟演练”模块查看时间安排与参与方式。</p>
+              <p><span class="en">Check updates and the simulation module for schedules and instructions.</span><span class="jp">请关注“最新动态”并进入“模拟演练”模块查看时间安排与参与方式。</span></p>
             </div>
           </div>
         </div>
@@ -664,14 +786,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <summary class="c-faq__summary">
           <div class="c-faq__summary-inner">
             <span class="c-faq__summary-icon">Q</span>
-            <span class="c-faq__summary-text">72小时应急包里有什么？</span>
+            <span class="c-faq__summary-text"><span class="en">What should a 72-hour kit include?</span><span class="jp">72小时应急包里有什么？</span></span>
           </div>
         </summary>
         <div class="c-faq__answer">
           <div class="c-faq__answer-inner">
             <span class="c-faq__answer-icon">A</span>
             <div class="c-faq__answer-text">
-              <p>Water, food, flashlight, power bank, first-aid items, and key documents.<br><br>建议包含：饮用水、食物、手电、充电宝、基础药品/急救用品与重要证件复印件等。</p>
+              <p><span class="en">Water, food, flashlight, power bank, first-aid items, and key documents.</span><span class="jp">建议包含：饮用水、食物、手电、充电宝、基础药品/急救用品与重要证件复印件等。</span></p>
             </div>
           </div>
         </div>
@@ -1251,7 +1373,22 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         try { localStorage.setItem(KEY, next); } catch (e) {}
 
         var btn = document.getElementById('js-lang-toggle');
-        if (btn) btn.textContent = next === 'en' ? '中文' : 'English';
+        if (btn) {
+          var label = next === 'en' ? 'Switch Language' : '切换语言';
+          btn.textContent = label;
+          btn.setAttribute('aria-label', label);
+        }
+
+        var openBtn = document.getElementById('js-header-open');
+        if (openBtn) openBtn.setAttribute('aria-label', next === 'en' ? 'Open menu' : '打开菜单');
+
+        var closeBtn = document.getElementById('js-header-close');
+        if (closeBtn) closeBtn.setAttribute('aria-label', next === 'en' ? 'Close menu' : '关闭菜单');
+
+        var cardLabelLists = document.querySelectorAll('.c-card-list-item__labels');
+        cardLabelLists.forEach(function (el) {
+          el.setAttribute('aria-label', next === 'en' ? 'Categories' : '标签');
+        });
       }
 
       function init() {

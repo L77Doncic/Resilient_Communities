@@ -37,7 +37,7 @@ export default function Navbar() {
             <ShieldAlert size={24} />
           </div>
           <span className={`font-bold text-[20px] tracking-widest font-serif ${textClass}`}>
-            RESILIENCE<span className="opacity-50">OS</span>
+            {t('RESILIENCE OS', '韧性系统')}
           </span>
         </Link>
         <div className="flex items-center gap-8">

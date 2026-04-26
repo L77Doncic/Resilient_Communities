@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Shield, CloudRain, Wind, Activity, DollarSign, CheckCircle2, AlertTriangle, ArrowRight, RefreshCw, Droplets, Flame, Waves, ThermometerSun, Trees } from 'lucide-react';
+import { Shield, CloudRain, Wind, Activity, DollarSign, CheckCircle2, AlertTriangle, RefreshCw, Droplets, Flame, Waves, ThermometerSun, Trees } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
+import PageHero from '../components/PageHero';
 
 type Upgrade = {
   id: string;
@@ -79,18 +80,16 @@ export default function Simulation() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 bg-ube-500/10 text-ube-600 px-4 py-2 rounded-full text-[12px] font-semibold uppercase tracking-[1.08px] mb-4">
-          <span>{t('Interactive Lab', '互动实验室')}</span>
-        </div>
-        <h1 className="text-[44px] font-semibold tracking-[-1.32px] mb-4 text-clay-black">
-          {t('Community Resilience Simulator', '社区韧性模拟器')}
-        </h1>
-        <p className="text-[18px] text-warm-silver max-w-2xl mx-auto">
-          {t('You are the city planner. Use your budget to upgrade the community infrastructure, then test it against extreme weather events.', '您是城市规划师。合理分配预算升级社区基础设施，然后测试其在极端天气下的表现。')}
-        </p>
-      </div>
+    <div className="bg-warm-cream">
+      <PageHero
+        eyebrow={t('Interactive Lab', '互动实验室')}
+        title={t('Community Resilience Simulator', '社区韧性模拟器')}
+        description={t('Use a limited budget to strengthen drainage, shelters, alerts, and cooling systems, then test the community against extreme events.', '用有限预算加固排水、避难、预警与降温系统，再把社区放进极端灾害情境中检验。')}
+        image="/common/img/elements/induction-event-service.webp"
+        icon={Activity}
+      />
+
+      <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
 
       <div className="grid lg:grid-cols-12 gap-8">
         {/* Left Column: Controls */}
@@ -98,11 +97,11 @@ export default function Simulation() {
           {phase === 'build' && (
             <motion.div 
               initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              className="bg-pure-white border border-oat-border rounded-[32px] p-8 clay-shadow"
+              className="bg-pure-white border border-oat-border rounded-lg p-8 clay-shadow"
             >
               <div className="flex items-center justify-between mb-8 pb-6 border-b border-oat-light">
                 <h2 className="text-[24px] font-semibold text-clay-black">{t('Infrastructure Upgrades', '基础设施升级')}</h2>
-                <div className="flex items-center gap-2 bg-lemon-400/20 text-lemon-800 px-4 py-2 rounded-full font-mono font-bold text-[20px]">
+                <div className="flex items-center gap-2 bg-lemon-400/20 text-lemon-800 px-4 py-2 rounded-md font-mono font-bold text-[20px]">
                   <DollarSign size={20} /> {budget}k
                 </div>
               </div>
@@ -118,7 +117,7 @@ export default function Simulation() {
                       key={upgrade.id}
                       onClick={() => toggleUpgrade(upgrade)}
                       disabled={!canAfford && !isSelected}
-                      className={`text-left p-6 rounded-[24px] border transition-all duration-300 relative overflow-hidden ${
+                      className={`text-left p-6 rounded-lg border transition-all duration-300 relative overflow-hidden ${
                         isSelected 
                           ? 'bg-pure-white border-matcha-600 shadow-md' 
                           : canAfford 
@@ -132,7 +131,7 @@ export default function Simulation() {
                         </div>
                       )}
                       <div className="flex justify-between items-start mb-4">
-                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center bg-oat-light ${upgrade.color}`}>
+                        <div className={`w-10 h-10 rounded-md flex items-center justify-center bg-oat-light ${upgrade.color}`}>
                           <Icon size={20} />
                         </div>
                         <span className="font-mono font-bold text-warm-charcoal">${upgrade.cost}k</span>
@@ -156,7 +155,7 @@ export default function Simulation() {
           {phase === 'simulate' && (
             <motion.div 
               initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-              className="bg-clay-black rounded-[32px] p-12 text-center text-pure-white overflow-hidden relative min-h-[400px] flex flex-col items-center justify-center"
+              className="bg-clay-black rounded-lg p-12 text-center text-pure-white overflow-hidden relative min-h-[400px] flex flex-col items-center justify-center"
             >
               <motion.div
                 animate={{ rotate: 360 }}
@@ -177,7 +176,7 @@ export default function Simulation() {
           {phase === 'result' && (
             <motion.div 
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              className="bg-pure-white border border-oat-border rounded-[32px] p-8 clay-shadow"
+              className="bg-pure-white border border-oat-border rounded-lg p-8 clay-shadow"
             >
               <div className="text-center mb-8">
                 <div className={`w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 ${damage < 30 ? 'bg-matcha-600/20 text-matcha-600' : damage < 60 ? 'bg-lemon-400/20 text-lemon-600' : 'bg-pomegranate-400/20 text-pomegranate-400'}`}>
@@ -189,7 +188,7 @@ export default function Simulation() {
                 </p>
               </div>
 
-              <div className="bg-oat-light/50 rounded-[24px] p-6 mb-8">
+              <div className="bg-oat-light/50 rounded-lg p-6 mb-8">
                 <h3 className="font-semibold text-clay-black mb-4">{t('After Action Report', '行动后报告')}</h3>
                 <ul className="space-y-4">
                   {selectedUpgrades.length === 0 && (
@@ -246,7 +245,7 @@ export default function Simulation() {
               <div className="text-center">
                 <button 
                   onClick={resetSimulation}
-                  className="bg-clay-black text-pure-white px-8 py-4 rounded-full text-[18px] font-medium clay-hover inline-flex items-center gap-2"
+                  className="bg-clay-black text-pure-white px-8 py-4 rounded-md text-[18px] font-medium clay-hover inline-flex items-center gap-2"
                 >
                   <RefreshCw size={20} /> {t('Run Another Simulation', '运行新的模拟')}
                 </button>
@@ -257,7 +256,7 @@ export default function Simulation() {
 
         {/* Right Column: Status */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="bg-pure-white border border-oat-border rounded-[32px] p-8 clay-shadow sticky top-28">
+          <div className="bg-pure-white border border-oat-border rounded-lg p-8 clay-shadow sticky top-28">
             <h3 className="text-[20px] font-semibold text-clay-black mb-6">{t('Community Status', '社区状态')}</h3>
             
             <div className="mb-8">
@@ -283,9 +282,9 @@ export default function Simulation() {
                     key={disaster.id}
                     onClick={() => phase === 'build' && setActiveDisaster(disaster)}
                     disabled={phase !== 'build'}
-                    className={`w-full flex items-center justify-between p-4 rounded-xl border transition-all ${
+                    className={`w-full flex items-center justify-between p-4 rounded-md border transition-all ${
                       activeDisaster.id === disaster.id 
-                        ? `bg-pure-white border-${disaster.color.split('-')[1]}-400 shadow-sm` 
+                        ? 'bg-pure-white border-matcha-600 shadow-sm' 
                         : 'bg-oat-light/50 border-transparent hover:bg-pure-white'
                     } ${phase !== 'build' ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
@@ -304,13 +303,14 @@ export default function Simulation() {
             {phase === 'build' && (
               <button 
                 onClick={runSimulation}
-                className="w-full bg-pomegranate-400 text-white py-4 rounded-full text-[18px] font-medium clay-hover flex items-center justify-center gap-2 shadow-lg shadow-pomegranate-400/20"
+                className="w-full bg-pomegranate-400 text-white py-4 rounded-md text-[18px] font-medium clay-hover flex items-center justify-center gap-2 shadow-lg shadow-pomegranate-400/20"
               >
                 <Activity size={20} /> {t('Trigger Disaster', '触发灾害')}
               </button>
             )}
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

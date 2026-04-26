@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Activity, Droplets, Wind, Flame, ChevronRight, AlertTriangle, Info, Waves, ThermometerSun, Snowflake, Trees } from 'lucide-react';
+import { Activity, Droplets, Wind, Flame, ChevronRight, AlertTriangle, Info, Waves, ThermometerSun, Trees } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
+import PageHero from '../components/PageHero';
 
 export default function Encyclopedia() {
   const { t } = useAppContext();
@@ -126,7 +127,7 @@ export default function Encyclopedia() {
       factsZh: [
         { title: '尽早撤离', desc: '接到撤离命令后立即离开，野火的蔓延速度可能超过人的奔跑速度。' },
         { title: '清理植被', desc: '清理房屋周围的枯枝落叶，建立防火隔离带。' },
-        { title: '佩戴N95口罩', desc: '使用N95口罩保护肺部免受有害烟雾颗粒的伤害。' }
+        { title: '佩戴防颗粒口罩', desc: '使用防颗粒口罩保护肺部免受有害烟雾颗粒的伤害。' }
       ],
       caseStudyEn: '2019-2020 Australian Bushfires: Known as the "Black Summer", these fires burned an estimated 24.3 million hectares, killed 33 people, and resulted in the death or displacement of nearly 3 billion animals.',
       caseStudyZh: '2019-2020年澳大利亚丛林大火：被称为“黑色夏天”，大火烧毁了约2430万公顷土地，导致33人死亡，近30亿只动物死亡或流离失所。',
@@ -188,22 +189,16 @@ export default function Encyclopedia() {
   const activeData = disasters.find(d => d.id === activeTab) || disasters[0];
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-16"
-      >
-        <div className="inline-flex items-center gap-2 bg-badge-blue-bg text-badge-blue-text px-4 py-2 rounded-full text-[12px] font-semibold uppercase tracking-[1.08px] mb-4">
-          <span>{t('Knowledge Base', '科普知识库')}</span>
-        </div>
-        <h1 className="text-[44px] font-semibold tracking-[-1.32px] mb-4 text-clay-black">
-          {t('Disaster Encyclopedia', '防灾减灾百科')}
-        </h1>
-        <p className="text-[18px] text-warm-silver max-w-2xl mx-auto">
-          {t('Understand the science behind natural disasters and learn essential survival skills.', '了解自然灾害背后的科学原理，掌握关键的自救互救技能。')}
-        </p>
-      </motion.div>
+    <div className="bg-warm-cream">
+      <PageHero
+        eyebrow={t('Knowledge Base', '科普知识库')}
+        title={t('Disaster Encyclopedia', '防灾减灾百科')}
+        description={t('Understand disaster mechanisms, real-world cases, and the actions that reduce harm before, during, and after an emergency.', '理解灾害机理、真实案例与关键行动，在灾前、灾中、灾后降低风险。')}
+        image="/common/img/event/resilience-brief-02.png"
+        icon={Info}
+      />
+
+      <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
 
       <div className="grid lg:grid-cols-12 gap-8">
         {/* Sidebar */}
@@ -217,14 +212,14 @@ export default function Encyclopedia() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setActiveTab(disaster.id)}
-                className={`w-full text-left p-6 rounded-[24px] border transition-all duration-300 flex items-center justify-between ${
+                className={`w-full text-left p-6 rounded-lg border transition-all duration-300 flex items-center justify-between ${
                   isActive 
                     ? `bg-pure-white ${disaster.borderColor} shadow-lg scale-105 z-10 relative` 
                     : 'bg-pure-white/50 border-oat-border hover:bg-pure-white'
                 }`}
               >
                 <div className="flex items-center gap-4">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${isActive ? disaster.bgColor : 'bg-oat-light'} ${isActive ? disaster.color : 'text-warm-silver'}`}>
+                  <div className={`w-12 h-12 rounded-md flex items-center justify-center ${isActive ? disaster.bgColor : 'bg-oat-light'} ${isActive ? disaster.color : 'text-warm-silver'}`}>
                     <Icon size={24} />
                   </div>
                   <div>
@@ -248,14 +243,11 @@ export default function Encyclopedia() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.3 }}
-              className="bg-pure-white border border-oat-border rounded-[32px] p-8 md:p-12 clay-shadow relative overflow-hidden"
+              className="bg-pure-white border border-oat-border rounded-lg p-8 md:p-12 clay-shadow relative overflow-hidden"
             >
-              {/* Decorative Background Blob */}
-              <div className={`absolute -top-24 -right-24 w-64 h-64 rounded-full blur-3xl opacity-20 ${activeData.bgColor.split('/')[0]}`} />
-
               <div className="relative z-10">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${activeData.bgColor} ${activeData.color}`}>
+                  <div className={`w-16 h-16 rounded-lg flex items-center justify-center ${activeData.bgColor} ${activeData.color}`}>
                     <activeData.icon size={32} />
                   </div>
                   <h2 className="text-[36px] font-semibold text-clay-black">
@@ -267,7 +259,7 @@ export default function Encyclopedia() {
                   {t(activeData.descEn, activeData.descZh)}
                 </p>
 
-                <div className="bg-oat-light/30 border border-oat-border rounded-[24px] p-6 mb-10">
+                <div className="bg-oat-light/30 border border-oat-border rounded-lg p-6 mb-10">
                   <h3 className="text-[18px] font-semibold text-clay-black mb-3 flex items-center gap-2">
                     <Activity size={18} className={activeData.color} />
                     {t('Real-World Case Study', '真实案例分析')}
@@ -289,7 +281,7 @@ export default function Encyclopedia() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 + 0.2 }}
-                      className="bg-oat-light/50 border border-oat-border rounded-[20px] p-6 hover:bg-pure-white hover:shadow-md transition-all"
+                      className="bg-oat-light/50 border border-oat-border rounded-lg p-6 hover:bg-pure-white hover:shadow-md transition-all"
                     >
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-4 font-bold text-[14px] ${activeData.bgColor} ${activeData.color}`}>
                         {index + 1}
@@ -300,7 +292,7 @@ export default function Encyclopedia() {
                   ))}
                 </div>
 
-                <div className="mt-12 bg-clay-black text-pure-white rounded-[24px] p-8 flex items-start gap-4">
+                <div className="mt-12 bg-clay-black text-pure-white rounded-lg p-8 flex items-start gap-4">
                   <Info className="text-matcha-300 shrink-0 mt-1" size={24} />
                   <div>
                     <h4 className="font-semibold text-[18px] mb-2">{t('Scientific Fact', '科学小知识')}</h4>
@@ -313,6 +305,7 @@ export default function Encyclopedia() {
             </motion.div>
           </AnimatePresence>
         </div>
+      </div>
       </div>
     </div>
   );

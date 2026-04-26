@@ -15,7 +15,7 @@ This repository is a Vite + React + TypeScript app with a small Express wrapper.
 Use TypeScript React function components and keep edits aligned with the style of the file you touch. Current code generally uses single quotes and semicolons. Name components and page files in PascalCase, for example `EmergencyKit.tsx`; keep helper/data modules in camelCase, for example `quizQuestions.ts`. Put shared UI in `src/components/`, route screens in `src/pages/`, and avoid mixing static content blobs into component files when they belong in `src/data/`.
 
 ## Testing Guidelines
-There is no automated test suite yet. Before opening a PR, run `npm run lint` and `npm run build`, then manually smoke-test the main routes: `/`, `/legacy-home`, `/simulation`, `/games`, `/encyclopedia`, `/kit`, and `/office-workers/index.html`. If you add tests later, place them near the feature as `*.test.ts` or `*.test.tsx`.
+There is no automated test suite yet. Before opening a PR, run `npm run lint` and `npm run build`, then manually smoke-test the main routes: `/`, `/simulation`, `/games`, `/encyclopedia`, `/kit`, and `/office-workers/index.html`. If you add tests later, place them near the feature as `*.test.ts` or `*.test.tsx`.
 
 ## Commit & Pull Request Guidelines
 Git history is minimal, so use clear imperative commit subjects such as `Add emergency kit route copy` or `Fix office workers static asset path`. Keep commits focused on one concern. PRs should include a short summary, note any environment or route changes, link related issues when available, and attach screenshots or short recordings for visible UI updates. List the manual checks you ran.

@@ -1,8 +1,9 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { Shield, Heart, AlertCircle, Play, BrainCircuit, Map, Clock, CheckCircle2, XCircle, Mountain, Waves, Building2, Factory, TreePine } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { quizQuestions, Question } from '../data/quizQuestions';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import PageHero from '../components/PageHero';
 
 type Sector = {
   id: string;
@@ -19,6 +20,14 @@ type GameEvent = {
   message: string;
   type: 'warning' | 'critical' | 'info';
 };
+
+const QUIZ_ROUND_SIZE = 10;
+
+function drawQuizRound() {
+  return [...quizQuestions]
+    .sort(() => 0.5 - Math.random())
+    .slice(0, QUIZ_ROUND_SIZE);
+}
 
 function ResourceGame({ onBack }: { onBack: () => void }) {
   const { t } = useAppContext();
@@ -142,7 +151,7 @@ function ResourceGame({ onBack }: { onBack: () => void }) {
   const totalDamage = sectors.reduce((acc, s) => acc + s.damage, 0);
 
   return (
-    <div className="bg-pure-white border border-oat-border rounded-[40px] p-8 clay-shadow max-w-6xl mx-auto">
+    <div className="bg-pure-white border border-oat-border rounded-lg p-8 clay-shadow max-w-6xl mx-auto my-12">
       <div className="flex items-center justify-between mb-8 pb-8 border-b border-oat-light">
         <div className="flex gap-8 items-center">
           <button onClick={onBack} className="text-warm-silver hover:text-clay-black font-medium">← {t('Back', '返回')}</button>
@@ -162,11 +171,11 @@ function ResourceGame({ onBack }: { onBack: () => void }) {
         </div>
         
         <div className="flex gap-4">
-          <div className="bg-oat-light px-4 py-2 rounded-xl flex items-center gap-2 text-clay-black" title={t('Sandbags (Reduces Risk)', '沙袋 (降低风险)')}>
+          <div className="bg-oat-light px-4 py-2 rounded-md flex items-center gap-2 text-clay-black" title={t('Sandbags (Reduces Risk)', '沙袋 (降低风险)')}>
             <Shield size={20} className="text-matcha-600" />
             <span className="font-mono font-bold text-[20px]">{inventory.sandbags}</span>
           </div>
-          <div className="bg-oat-light px-4 py-2 rounded-xl flex items-center gap-2 text-clay-black" title={t('Medkits (Reduces Damage)', '急救包 (修复受损)')}>
+          <div className="bg-oat-light px-4 py-2 rounded-md flex items-center gap-2 text-clay-black" title={t('Medkits (Reduces Damage)', '急救包 (修复受损)')}>
             <Heart size={20} className="text-pomegranate-400" />
             <span className="font-mono font-bold text-[20px]">{inventory.medkits}</span>
           </div>
@@ -181,7 +190,7 @@ function ResourceGame({ onBack }: { onBack: () => void }) {
           </p>
           <button 
             onClick={startGame}
-            className="bg-clay-black text-pure-white px-8 py-4 rounded-full text-[20px] font-medium clay-hover"
+            className="bg-clay-black text-pure-white px-8 py-4 rounded-md text-[20px] font-medium clay-hover"
           >
             {t('Start Mission', '开始任务')}
           </button>
@@ -198,7 +207,7 @@ function ResourceGame({ onBack }: { onBack: () => void }) {
           </p>
           <button 
             onClick={startGame}
-            className="bg-clay-black text-pure-white px-8 py-4 rounded-full text-[20px] font-medium clay-hover"
+            className="bg-clay-black text-pure-white px-8 py-4 rounded-md text-[20px] font-medium clay-hover"
           >
             {t('Play Again', '再玩一次')}
           </button>
@@ -211,7 +220,7 @@ function ResourceGame({ onBack }: { onBack: () => void }) {
               return (
                 <div 
                   key={sector.id} 
-                  className={`border rounded-[24px] p-5 transition-colors relative overflow-hidden ${
+                  className={`border rounded-lg p-5 transition-colors relative overflow-hidden ${
                     sector.risk > 80 ? 'bg-pomegranate-400/10 border-pomegranate-400' : 
                     sector.risk > 50 ? 'bg-lemon-400/10 border-lemon-400' : 
                     'bg-pure-white border-oat-border'
@@ -261,14 +270,14 @@ function ResourceGame({ onBack }: { onBack: () => void }) {
                     <button 
                       onClick={() => allocateResource(sector.id, 'sandbags')}
                       disabled={inventory.sandbags === 0}
-                      className="flex-1 bg-pure-white border border-oat-border py-2.5 rounded-xl flex justify-center items-center gap-2 hover:bg-matcha-300 transition-colors disabled:opacity-50 disabled:hover:bg-pure-white text-clay-black font-semibold text-[14px]"
+                      className="flex-1 bg-pure-white border border-oat-border py-2.5 rounded-md flex justify-center items-center gap-2 hover:bg-matcha-300 transition-colors disabled:opacity-50 disabled:hover:bg-pure-white text-clay-black font-semibold text-[14px]"
                     >
                       <Shield size={16} /> -25%
                     </button>
                     <button 
                       onClick={() => allocateResource(sector.id, 'medkits')}
                       disabled={inventory.medkits === 0 || sector.damage === 0}
-                      className="flex-1 bg-pure-white border border-oat-border py-2.5 rounded-xl flex justify-center items-center gap-2 hover:bg-pomegranate-400 hover:text-white transition-colors disabled:opacity-50 disabled:hover:bg-pure-white text-clay-black font-semibold text-[14px]"
+                      className="flex-1 bg-pure-white border border-oat-border py-2.5 rounded-md flex justify-center items-center gap-2 hover:bg-pomegranate-400 hover:text-white transition-colors disabled:opacity-50 disabled:hover:bg-pure-white text-clay-black font-semibold text-[14px]"
                     >
                       <Heart size={16} /> -10%
                     </button>
@@ -278,7 +287,7 @@ function ResourceGame({ onBack }: { onBack: () => void }) {
             })}
           </div>
 
-          <div className="bg-oat-light/50 rounded-[24px] p-6 border border-oat-border h-full flex flex-col">
+          <div className="bg-oat-light/50 rounded-lg p-6 border border-oat-border h-full flex flex-col">
             <h3 className="font-semibold text-clay-black mb-4">{t('Event Log', '事件日志')}</h3>
             <div className="space-y-3 flex-1 overflow-y-auto">
               {events.map((ev, i) => (
@@ -302,14 +311,12 @@ function ResourceGame({ onBack }: { onBack: () => void }) {
 }
 
 function QuizGame({ onBack }: { onBack: () => void }) {
-  const { t } = useAppContext();
+  const { t, language } = useAppContext();
   
-  // Randomly select 10 questions on mount
   const [questions, setQuestions] = useState<Question[]>([]);
   
   useEffect(() => {
-    const shuffled = [...quizQuestions].sort(() => 0.5 - Math.random());
-    setQuestions(shuffled.slice(0, 10));
+    setQuestions(drawQuizRound());
   }, []);
 
   const [currentQ, setCurrentQ] = useState(0);
@@ -343,27 +350,26 @@ function QuizGame({ onBack }: { onBack: () => void }) {
   if (questions.length === 0) return null;
 
   return (
-    <div className="bg-pure-white border border-oat-border rounded-[40px] p-8 clay-shadow max-w-3xl mx-auto">
+    <div className="bg-pure-white border border-oat-border rounded-lg p-8 clay-shadow max-w-3xl mx-auto my-12">
       <button onClick={onBack} className="text-warm-silver hover:text-clay-black font-medium mb-8">← {t('Back', '返回')}</button>
       
       {showResult ? (
         <div className="text-center py-12">
-          <div className="w-24 h-24 bg-matcha-600/20 text-matcha-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="w-24 h-24 bg-matcha-600/20 text-matcha-600 rounded-lg flex items-center justify-center mx-auto mb-6">
             <BrainCircuit size={48} />
           </div>
           <h2 className="text-[32px] font-semibold mb-4 text-clay-black">{t('Quiz Complete!', '问答完成！')}</h2>
           <p className="text-[20px] text-warm-silver mb-8">{t(`You scored ${score} out of ${questions.length}`, `你答对了 ${score} 道题，共 ${questions.length} 道`)}</p>
           <button 
             onClick={() => { 
-              const shuffled = [...quizQuestions].sort(() => 0.5 - Math.random());
-              setQuestions(shuffled.slice(0, 10));
+              setQuestions(drawQuizRound());
               setCurrentQ(0); 
               setScore(0); 
               setShowResult(false); 
               setAnsweredState('none'); 
               setSelectedOption(null); 
             }}
-            className="bg-clay-black text-pure-white px-8 py-4 rounded-full text-[20px] font-medium clay-hover"
+            className="bg-clay-black text-pure-white px-8 py-4 rounded-md text-[20px] font-medium clay-hover"
           >
             {t('Try Again', '再试一次')}
           </button>
@@ -378,12 +384,12 @@ function QuizGame({ onBack }: { onBack: () => void }) {
             <div className="h-2 bg-oat-light rounded-full overflow-hidden mb-6">
               <div className="h-full bg-lemon-500 transition-all duration-300" style={{ width: `${((currentQ) / questions.length) * 100}%` }} />
             </div>
-            <h2 className="text-[24px] font-semibold text-clay-black leading-[1.4]">{questions[currentQ].q}</h2>
+            <h2 className="text-[24px] font-semibold text-clay-black leading-[1.4]">{questions[currentQ].q[language]}</h2>
           </div>
           
           <div className="space-y-4 mb-8">
             {questions[currentQ].options.map((opt, i) => {
-              let btnClass = "w-full text-left p-5 rounded-xl border transition-all text-[18px] font-medium ";
+              let btnClass = "w-full text-left p-5 rounded-md border transition-all text-[18px] font-medium ";
               
               if (answeredState === 'none') {
                 btnClass += "border-oat-border bg-pure-white hover:bg-oat-light text-clay-black";
@@ -405,7 +411,7 @@ function QuizGame({ onBack }: { onBack: () => void }) {
                   className={btnClass}
                 >
                   <div className="flex items-center justify-between">
-                    <span>{opt}</span>
+                    <span>{opt[language]}</span>
                     {answeredState !== 'none' && i === questions[currentQ].a && <CheckCircle2 size={24} className="text-matcha-600" />}
                     {answeredState !== 'none' && i === selectedOption && i !== questions[currentQ].a && <XCircle size={24} className="text-pomegranate-400" />}
                   </div>
@@ -415,19 +421,19 @@ function QuizGame({ onBack }: { onBack: () => void }) {
           </div>
 
           {answeredState !== 'none' && (
-            <div className={`p-6 rounded-2xl mb-8 animate-in fade-in slide-in-from-bottom-4 ${answeredState === 'correct' ? 'bg-matcha-600/10 border border-matcha-600/20' : 'bg-pomegranate-400/10 border border-pomegranate-400/20'}`}>
+            <div className={`p-6 rounded-lg mb-8 animate-in fade-in slide-in-from-bottom-4 ${answeredState === 'correct' ? 'bg-matcha-600/10 border border-matcha-600/20' : 'bg-pomegranate-400/10 border border-pomegranate-400/20'}`}>
               <h3 className={`font-bold mb-2 flex items-center gap-2 ${answeredState === 'correct' ? 'text-matcha-700' : 'text-pomegranate-600'}`}>
                 {answeredState === 'correct' ? <CheckCircle2 size={20} /> : <XCircle size={20} />}
                 {answeredState === 'correct' ? t('Correct!', '回答正确！') : t('Incorrect!', '回答错误！')}
               </h3>
-              <p className="text-warm-charcoal leading-[1.6]">{questions[currentQ].explanation}</p>
+              <p className="text-warm-charcoal leading-[1.6]">{questions[currentQ].explanation[language]}</p>
             </div>
           )}
 
           {answeredState !== 'none' && (
             <button 
               onClick={nextQuestion}
-              className="w-full bg-clay-black text-pure-white py-4 rounded-full text-[18px] font-medium clay-hover"
+              className="w-full bg-clay-black text-pure-white py-4 rounded-md text-[18px] font-medium clay-hover"
             >
               {currentQ < questions.length - 1 ? t('Next Question', '下一题') : t('See Results', '查看结果')}
             </button>
@@ -447,25 +453,19 @@ export default function Games() {
       <Route
         path="/"
         element={
-          <div className="max-w-7xl mx-auto px-6 py-12">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 bg-badge-blue-bg text-badge-blue-text px-4 py-2 rounded-full text-[12px] font-semibold uppercase tracking-[1.08px] mb-4">
-                <span>{t('Interactive Learning', '互动学习')}</span>
-              </div>
-              <h1 className="text-[44px] font-semibold tracking-[-1.32px] mb-4 text-clay-black">
-                {t('Resilience Training Center', '韧性训练中心')}
-              </h1>
-              <p className="text-[18px] text-warm-silver max-w-2xl mx-auto">
-                {t(
-                  'Learn and practice disaster response skills through interactive simulations.',
-                  '通过互动模拟学习和练习灾害应对技能。'
-                )}
-              </p>
-            </div>
+          <div className="bg-warm-cream">
+            <PageHero
+              eyebrow={t('Interactive Learning', '互动学习')}
+              title={t('Resilience Training Center', '韧性训练中心')}
+              description={t('Practice resource allocation and answer realistic emergency questions. The quiz now draws 10 questions from a 50-question disaster-safety bank each time.', '练习资源调度，并回答真实应急场景题。答题每次会从50题防灾题库中随机抽取10题。')}
+              image="/common/img/elements/induction-interview.webp"
+              icon={BrainCircuit}
+            />
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              <div className="bg-pure-white border border-oat-border rounded-[24px] p-8 clay-shadow flex flex-col items-center text-center">
-                <div className="w-16 h-16 rounded-2xl bg-ube-300 text-ube-900 flex items-center justify-center mb-6">
+            <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
+              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <div className="bg-pure-white border border-oat-border rounded-lg p-8 clay-shadow flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-lg bg-ube-300 text-ube-900 flex items-center justify-center mb-6">
                   <Map size={32} />
                 </div>
                 <h3 className="text-[24px] font-semibold mb-4 text-clay-black">{t('Resilience Commander', '韧性指挥官')}</h3>
@@ -477,14 +477,14 @@ export default function Games() {
                 </p>
                 <Link
                   to="commander"
-                  className="bg-clay-black text-pure-white px-6 py-3 rounded-full font-medium clay-hover flex items-center gap-2 mt-auto"
+                  className="bg-clay-black text-pure-white px-6 py-3 rounded-md font-medium clay-hover flex items-center gap-2 mt-auto"
                 >
                   <Play size={18} /> {t('Play Game', '开始游戏')}
                 </Link>
               </div>
 
-              <div className="bg-pure-white border border-oat-border rounded-[24px] p-8 clay-shadow flex flex-col items-center text-center">
-                <div className="w-16 h-16 rounded-2xl bg-lemon-400 text-lemon-800 flex items-center justify-center mb-6">
+              <div className="bg-pure-white border border-oat-border rounded-lg p-8 clay-shadow flex flex-col items-center text-center">
+                <div className="w-16 h-16 rounded-lg bg-lemon-400 text-lemon-800 flex items-center justify-center mb-6">
                   <BrainCircuit size={32} />
                 </div>
                 <h3 className="text-[24px] font-semibold mb-4 text-clay-black">{t('Survival Quiz', '生存问答')}</h3>
@@ -496,17 +496,18 @@ export default function Games() {
                 </p>
                 <Link
                   to="quiz"
-                  className="bg-clay-black text-pure-white px-6 py-3 rounded-full font-medium clay-hover flex items-center gap-2 mt-auto"
+                  className="bg-clay-black text-pure-white px-6 py-3 rounded-md font-medium clay-hover flex items-center gap-2 mt-auto"
                 >
                   <Play size={18} /> {t('Start Quiz', '开始问答')}
                 </Link>
+              </div>
               </div>
             </div>
           </div>
         }
       />
-      <Route path="commander" element={<ResourceGame onBack={() => navigate('/games')} />} />
-      <Route path="quiz" element={<QuizGame onBack={() => navigate('/games')} />} />
+      <Route path="commander" element={<div className="bg-warm-cream px-6"><ResourceGame onBack={() => navigate('/games')} /></div>} />
+      <Route path="quiz" element={<div className="bg-warm-cream px-6"><QuizGame onBack={() => navigate('/games')} /></div>} />
     </Routes>
   );
 }

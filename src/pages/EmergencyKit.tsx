@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Check, Info, Backpack, Droplets, Flashlight, Radio, Cross, FileText, Wrench, Battery } from 'lucide-react';
+import { Check, Backpack, Droplets, Flashlight, Radio, Cross, FileText, Wrench, Battery } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
+import PageHero from '../components/PageHero';
 
 type KitItem = {
   id: string;
@@ -28,40 +29,32 @@ const KIT_ITEMS: KitItem[] = [
 export default function EmergencyKit() {
   const { t } = useAppContext();
   const [packedItems, setPackedItems] = useState<string[]>([]);
-  const [selectedItem, setSelectedItem] = useState<KitItem | null>(null);
 
   const toggleItem = (item: KitItem) => {
     if (packedItems.includes(item.id)) {
       setPackedItems(packedItems.filter(id => id !== item.id));
     } else {
       setPackedItems([...packedItems, item.id]);
-      setSelectedItem(item);
     }
   };
 
   const progress = Math.round((packedItems.length / KIT_ITEMS.length) * 100);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-16"
-      >
-        <div className="inline-flex items-center gap-2 bg-pomegranate-400/10 text-pomegranate-400 px-4 py-2 rounded-full text-[12px] font-semibold uppercase tracking-[1.08px] mb-4">
-          <span>{t('Preparation', '应急准备')}</span>
-        </div>
-        <h1 className="text-[44px] font-semibold tracking-[-1.32px] mb-4 text-clay-black">
-          {t('72-Hour Emergency Kit', '72小时家庭应急包')}
-        </h1>
-        <p className="text-[18px] text-warm-silver max-w-2xl mx-auto">
-          {t('The first 72 hours after a disaster are critical. Pack your virtual emergency kit to learn what you need to survive.', '灾后黄金72小时至关重要。整理您的虚拟应急包，学习必备的生存物资。')}
-        </p>
-      </motion.div>
+    <div className="bg-warm-cream">
+      <PageHero
+        eyebrow={t('Preparation', '应急准备')}
+        title={t('72-Hour Emergency Kit', '72小时家庭应急包')}
+        description={t('Build a realistic household kit for power outages, evacuation, medical needs, and the first days after a disaster.', '为停电、转移、医疗需求与灾后最初几天准备真实可用的家庭应急物资。')}
+        image="/common/img/elements/induction-safe.webp"
+        icon={Backpack}
+      />
+
+      <div className="max-w-7xl mx-auto px-6 py-12 md:py-16">
 
       <div className="grid lg:grid-cols-12 gap-12 items-start">
         {/* Interactive Backpack Area */}
-        <div className="lg:col-span-5 bg-pure-white border border-oat-border rounded-[40px] p-8 clay-shadow sticky top-28">
+        <div className="lg:col-span-5 bg-pure-white border border-oat-border rounded-lg p-8 clay-shadow sticky top-28">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-[24px] font-semibold text-clay-black">{t('Your Backpack', '你的背包')}</h2>
             <span className="text-[24px] font-mono font-bold text-matcha-600">{progress}%</span>
@@ -83,7 +76,7 @@ export default function EmergencyKit() {
                 rotate: packedItems.length === KIT_ITEMS.length ? [0, -5, 5, 0] : 0
               }}
               transition={{ duration: 0.5 }}
-              className={`w-48 h-64 rounded-[40px] border-4 flex items-center justify-center transition-colors duration-500 ${
+                className={`w-48 h-64 rounded-lg border-4 flex items-center justify-center transition-colors duration-500 ${
                 packedItems.length === KIT_ITEMS.length 
                   ? 'bg-matcha-600/20 border-matcha-600 text-matcha-600' 
                   : 'bg-oat-light border-oat-border text-warm-silver'
@@ -108,7 +101,7 @@ export default function EmergencyKit() {
                     initial={{ opacity: 0, scale: 0, x: 0, y: 0 }}
                     animate={{ opacity: 1, scale: 1, x, y }}
                     exit={{ opacity: 0, scale: 0, x: 0, y: 0 }}
-                    className={`absolute w-12 h-12 rounded-full flex items-center justify-center shadow-md border border-pure-white bg-pure-white ${item.color}`}
+                  className={`absolute w-12 h-12 rounded-full flex items-center justify-center shadow-md border border-pure-white bg-pure-white ${item.color}`}
                   >
                     <Icon size={20} />
                   </motion.div>
@@ -121,7 +114,7 @@ export default function EmergencyKit() {
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mt-8 text-center text-matcha-600 font-medium bg-matcha-600/10 py-3 rounded-xl"
+              className="mt-8 text-center text-matcha-600 font-medium bg-matcha-600/10 py-3 rounded-md"
             >
               {t('You are fully prepared!', '你已准备就绪！')}
             </motion.div>
@@ -141,18 +134,18 @@ export default function EmergencyKit() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => toggleItem(item)}
-                  className={`text-left p-6 rounded-[24px] border transition-all duration-300 relative overflow-hidden ${
+                  className={`text-left p-6 rounded-lg border transition-all duration-300 relative overflow-hidden ${
                     isPacked 
                       ? 'bg-pure-white border-matcha-600 shadow-md' 
                       : 'bg-pure-white/50 border-oat-border hover:bg-pure-white hover:border-warm-silver'
                   }`}
                 >
                   {isPacked && (
-                    <div className="absolute top-0 right-0 w-16 h-16 bg-matcha-600/10 rounded-bl-[40px] flex items-start justify-end p-4">
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-matcha-600/10 rounded-bl-lg flex items-start justify-end p-4">
                       <Check size={20} className="text-matcha-600" />
                     </div>
                   )}
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${item.bgColor} ${item.color}`}>
+                  <div className={`w-12 h-12 rounded-md flex items-center justify-center mb-4 ${item.bgColor} ${item.color}`}>
                     <Icon size={24} />
                   </div>
                   <h3 className={`text-[18px] font-semibold mb-2 ${isPacked ? 'text-clay-black' : 'text-warm-charcoal'}`}>
@@ -166,6 +159,7 @@ export default function EmergencyKit() {
             })}
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

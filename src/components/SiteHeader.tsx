@@ -13,7 +13,7 @@ const NAV: NavItem[] = [
 ];
 
 export default function SiteHeader() {
-  const {language, t, toggleLanguage} = useAppContext();
+  const {t, toggleLanguage} = useAppContext();
   const location = useLocation();
   const [open, setOpen] = useState(false);
 
@@ -60,10 +60,10 @@ export default function SiteHeader() {
           <button
             onClick={toggleLanguage}
             className="text-[13px] font-bold tracking-[0.18em] text-black/70 hover:text-black transition-colors"
-            aria-label={t('Switch to Chinese', '切换为英文')}
-            title={t('Switch to Chinese', '切换为英文')}
+            aria-label={t('Switch Language', '切换语言')}
+            title={t('Switch Language', '切换语言')}
           >
-            {language === 'en' ? '中文' : 'English'}
+            {t('Switch Language', '切换语言')}
           </button>
         </div>
 
@@ -93,7 +93,7 @@ export default function SiteHeader() {
               onClick={toggleLanguage}
               className="py-2 text-left text-[14px] font-bold tracking-[0.14em] text-black/80"
             >
-              {language === 'en' ? '中文' : 'English'}
+              {t('Switch Language', '切换语言')}
             </button>
           </nav>
         </div>
