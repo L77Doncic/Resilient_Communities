@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Tenor+Sans&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Zen Kaku Gothic New", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Tenor Sans", ui-serif, Georgia, serif;
+
+  --color-clay-black: var(--theme-text);
+  --color-pure-white: var(--theme-surface);
+  --color-warm-cream: var(--theme-bg);
+  
+  --color-matcha-300: #d1e2a0;
+  --color-matcha-600: #499051;
+  --color-matcha-800: #25804a;
+  
+  --color-slushie-500: #78af8e;
+  --color-slushie-800: #499051;
+  
+  --color-lemon-400: #f8cc65;
+  --color-lemon-500: #fbbd41;
+  --color-lemon-700: #d08a11;
+  --color-lemon-800: #9d6a09;
+  
+  --color-ube-300: #c1b0ff;
+  --color-ube-800: #43089f;
+  --color-ube-900: #32037d;
+  
+  --color-pomegranate-400: #fc7981;
+  
+  --color-blueberry-800: #01418d;
+
+  --color-warm-silver: var(--theme-text-muted);
+  --color-warm-charcoal: var(--theme-text-secondary);
+  --color-dark-charcoal: #333333;
+
+  --color-oat-border: var(--theme-border);
+  --color-oat-light: var(--theme-border-light);
+  --color-cool-border: #e6e8ec;
+  --color-dark-border: #525a69;
+  --color-light-frost: #eff1f3;
+  
+  --color-badge-blue-bg: var(--theme-badge-bg);
+  --color-badge-blue-text: var(--theme-badge-text);
+
+  --shadow-clay: var(--theme-shadow-clay);
+  --shadow-hard: var(--theme-shadow-hard);
+}
+
+@layer base {
+  :root {
+    --theme-bg: #e3ebe1;
+    --theme-surface: #ffffff;
+    --theme-text: #222222;
+    --theme-text-secondary: #555555;
+    --theme-text-muted: #7b7b7b;
+    --theme-border: rgba(34, 34, 34, 0.1);
+    --theme-border-light: rgba(34, 34, 34, 0.05);
+    --theme-badge-bg: #d1e2a0;
+    --theme-badge-text: #25804a;
+    --theme-shadow-clay: rgba(0,0,0,0.05) 0px 4px 12px;
+    --theme-shadow-hard: rgb(0,0,0) -7px 7px;
+  }
+
+  /* English typography: Times New Roman (site-wide) */
+  html[data-lang="en"] {
+    --font-sans: "Times New Roman", Times, serif;
+    --font-serif: "Times New Roman", Times, serif;
+  }
+
+  .dark {
+    --theme-bg: #1c1b1a;
+    --theme-surface: #2a2928;
+    --theme-text: #f5f4f1;
+    --theme-text-secondary: #d0cdc5;
+    --theme-text-muted: #a3a098;
+    --theme-border: #4a4845;
+    --theme-border-light: #383634;
+    --theme-badge-bg: #25804a;
+    --theme-badge-text: #d1e2a0;
+    --theme-shadow-clay: rgba(0,0,0,0.3) 0px 4px 12px;
+    --theme-shadow-hard: #000000 -7px 7px;
+  }
+
+  body {
+    @apply bg-warm-cream text-clay-black font-sans font-medium transition-colors duration-300;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+}
+
+@layer utilities {
+  .clay-shadow {
+    box-shadow: var(--shadow-clay);
+  }
+  .clay-hover {
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .clay-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-clay);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--theme-border);
+    border-radius: 10px;
+  }
+}
